@@ -1,0 +1,112 @@
+@CHARSET "UTF-8";
+
+@font-face {
+	font-family: permanentmarker;
+	src: url(permanentmarker-webfont.woff);
+}
+
+@font-face {
+	font-family: ubuntu-tittle;
+	src: url(Ubuntu-Title.woff);
+}
+
+html {
+	background-color: #ccc;
+}
+
+body {
+	width: 1000px;
+	margin: auto;
+	font: 12px;
+	border-left: normal #555 4px;
+	border-right: normal #999 2px;
+	background-color: #fff;
+	padding: 20px 30px;
+}
+
+.error {
+	color: tomato;
+}
+
+h1.error {
+	color: tomato;
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+h1:not(.error) {
+	text-align: center;
+	margin-bottom: 50px;
+	text-shadow: 4px 4px 4px #558;
+	font-family: permanentmarker;
+}
+
+.botones {
+	text-align: right;
+	margin: 20px 50px 10px 50px;
+}
+
+.botones input, .botones button {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.botones input + input, .botones button + button {
+	margin-left: 10px;
+}
+
+.botonesIzq {
+	text-align: left;
+}
+
+table.tabla1 {
+	width: 90%;
+}
+
+table.tabla1 th {
+	background-color: #ccf;
+	font-family: ubuntu-tittle;
+}
+
+table.tabla1 tr:nth-child(odd) td {
+	background-color: #eef;
+}
+
+table.tabla1 tr:nth-child(even) td {
+	background-color: #fff;
+}
+
+table.centrada th {
+	text-align: center;
+}
+
+table.centrada td {
+	text-align: center;
+}
+
+table + table {
+	margin-top: 15px;
+}
+
+form.vertical {
+	display: table;
+}
+
+form.vertical div {
+	display: table-row;
+	margin: 10px 0px;
+}
+
+form.vertical input  {
+	margin: 20px 0 0 0;
+}
+
+form.vertical div.der {
+	display: "block";
+	text-align: right;
+}
+
+form.vertical label, form.vertical label + input  {
+	display: table-cell;
+	margin: 5px 20px;
+}

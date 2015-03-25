@@ -1,0 +1,9 @@
+[Sesion]
+TIMEOUT_SESION=10
+
+[Base de datos]
+DB_HOST=localhost
+DB_USER=ganar
+DB_PASSWD=ganar
+DB_NAME=ganar
+TABLE_PREFIX=ganar_
