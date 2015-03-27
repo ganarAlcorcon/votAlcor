@@ -105,64 +105,6 @@ function permitido ($permiso) {
 	return false;
 }
 
-/**
- * Da de alta un nuevo socio
- * @param int $idSocio
- * @param string $nombre
- * @param string $apellido1
- * @param string $apellido2
- * @param string $dni
- * @param DateTime $fchaNacimiento
- * @param string $email
- * @param string $tipoVia
- * @param string $direccion
- * @param string $portal
- * @param string $escalera
- * @param string $piso
- * @param string $puerta
- * @param string $localidad
- * @param string $cp
- * @return resource devuelve true si se ejecutó correctamente, false en caso contrario.
- */
-function altaSocio ($idSocio, $nombre, $apellido1, $apellido2, $dni, DateTime $fchaNacimiento, $email, $tipoVia, $direccion, $portal, $escalera, $piso, $puerta, $localidad, $cp) {
-	global $DEBUG;
-	global $enlace;
-	global $TABLE_PREFIX;
-
-	conectarBD();
-
-	if ($DEBUG) {
-		echo $consulta;
-	}
-
-	$consulta = sprintf("INSERT INTO " . $TABLE_PREFIX . "socio (idSocio, nombre, apellido1, apellido2, dni, fchaNacimiento, email, tipoVia, direccion, portal, escalera, piso, puerta, localidad, cp)
-		    VALUES (%d,'%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-			$enlace->real_escape_string($idSocio),
-			$enlace->real_escape_string($nombre),
-			$enlace->real_escape_string($apellido1),
-			$enlace->real_escape_string($apellido2),
-			$enlace->real_escape_string($dni),
-			formatearFechaBD($fchaNacimiento),
-			$enlace->real_escape_string($email),
-			$enlace->real_escape_string($tipoVia),
-			$enlace->real_escape_string($direccion),
-			$enlace->real_escape_string($portal),
-			$enlace->real_escape_string($escalera),
-			$enlace->real_escape_string($piso),
-			$enlace->real_escape_string($puerta),
-			$enlace->real_escape_string($localidad),
-			$enlace->real_escape_string($cp)
-	);
-
-	// Ejecutar la consulta
-	$resultado = $enlace->query($consulta);
-
-	if (!$resultado && $DEBUG) {
-		echo "'" . $consulta . "' Devolvió " . $enlace->error;
-	}
-
-	return $resultado;
-}
 
 
 /**

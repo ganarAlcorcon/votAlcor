@@ -203,3 +203,4 @@ function provincia ($codPostal) {
 	$codProvincia=  substr($codPostal,0,2) + 0;
 	return $PROVINCIA[$codProvincia];
 }
+

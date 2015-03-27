@@ -1,4 +1,4 @@
--- Fecha de dump: jue mar 26 00:04:03 CET 2015
+-- Fecha de dump: vie mar 27 19:02:53 CET 2015
 -- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ganar
@@ -91,7 +91,7 @@ CREATE TABLE `SIMPATIZANTES` (
   UNIQUE KEY `EMAIL_UNIQUE` (`EMAIL`),
   UNIQUE KEY `TELEFONO_UNIQUE` (`TELEFONO`),
   UNIQUE KEY `NIF_UNIQUE` (`NIF`),
-  UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`,`APELLIDO1`,`APELLIDO2`)
+  UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`,`APELLIDO1`,`APELLIDO2`,`FECHA_NACIMIENTO`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -134,4 +134,4 @@ CREATE TABLE `VOTACIONES` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-26  0:04:03
+-- Dump completed on 2015-03-27 19:02:53
