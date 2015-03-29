@@ -6,6 +6,21 @@ if (!(include_once dirname(__FILE__).'/../lib/comunCenso.php')) {
 	die ("Falta el archivo comunCenso.php");
 }
 
+//Comprobamos si tiene la cookie
+if (!isset($_COOKIE["_suef"])) {
+	//Recuperamos el dominio
+	$domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+	
+	$idAleatorio=textoAleatorio($CONFIG["TA_TAMANO"],$CONFIG["TA_GRUPOS"],$CONFIG["TA_SEPARADOR"]);
+	
+	//Enviamos la cookie
+	setcookie('_suef', $idAleatorio, time()+60*60*24*365, '/', $domain, false);
+	
+	//La guardamos por si fuera necesaria en esta conexión
+	$_COOKIE["_suef"] = $idAleatorio;
+	
+}
+
 ?>
 
 
@@ -24,7 +39,7 @@ if (!(include_once dirname(__FILE__).'/../lib/comunCenso.php')) {
 		
 		<script type="text/javascript">
 		<?php 
-		if ($_POST["identificacion"]) {
+		if (isset($_POST["identificacion"])) {
 			if (!isset($_POST["declaracion"])) {
 				echo "mensajeError='Debe aceptar la declaracion de valores';";
 			} else {
@@ -41,8 +56,14 @@ if (!(include_once dirname(__FILE__).'/../lib/comunCenso.php')) {
 					}
 				
 					//Damos de alta al simpatizante
-					altaSimpatizanteWeb ($_POST["nombre"], $_POST["apellido1"], $_POST["apellido2"], $_POST["nif"],
-					$fchaNac, $_POST["email"], $_POST["telefono"], $_SERVER["REMOTE_ADDR"] . ":" . $_SERVER["REMOTE_PORT"]);
+					$resultado= altaSimpatizanteWeb ($_POST["nombre"], $_POST["apellido1"], $_POST["apellido2"], $_POST["nif"],
+						$fchaNac, $_POST["email"], $_POST["telefono"], $_SERVER["REMOTE_ADDR"], $_SERVER["REMOTE_PORT"], $_COOKIE["_suef"]);
+					
+					if (!$resultado) {
+						echo "mensajeError='Ocurrió un error al dar de alta al simpatizante. Vuelva a intentarlo más tarde';";
+					} else {
+						echo "mensajeOk='" . $_POST["nombre"] . " ha sido dado de alta correctamente';";
+					}
 				}
 			}
 		}
@@ -51,6 +72,7 @@ if (!(include_once dirname(__FILE__).'/../lib/comunCenso.php')) {
 	</head>
 	<body class="container" onload="inicio()">
 		<div id="divError" class="alert alert-warning"></div>
+		<div id="divOk" class="alert alert-success"></div>
 		<form action="" accept-charset="utf-8" method="post" enctype="multipart/form-data" role="form" class="form-horizontal" >
 			<div class="form-group">
 				<label for="nombre" class="control-label col-sm-2">Nombre: </label>

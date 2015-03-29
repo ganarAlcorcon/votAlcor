@@ -26,15 +26,15 @@ function leerFecha ($cadenaFecha) {
 	global $FORMATO_FECHATIEMPO;
 	global $DEBUG;
 
-	if ($DEBUG) {
+	/*if ($DEBUG) {
 		echo "leerFecha " . $cadenaFecha;
-	}
+	}*/
 	
 	$fecha= DateTime::createFromFormat ($FORMATO_FECHATIEMPO, $cadenaFecha . " 00:00:00") ;
 	
-	if ($DEBUG) {
+	/*if ($DEBUG) {
 		echo "fecha leida: " . var_dump($fecha);
-	}
+	}*/
 	
 	if ($fecha && checkdate($fecha->format("m"), $fecha->format("d"), $fecha->format("Y")) && _comprobarHora($fecha)) {
 		return $fecha;
@@ -204,3 +204,43 @@ function provincia ($codPostal) {
 	return $PROVINCIA[$codProvincia];
 }
 
+
+/**
+ * Genera un texto aleatorio del tamaño $tam. El texto estará separado en grupos de $grupos caracteres si se especifica.
+ * @param number $tam Tamaño total de la cadena (incluidos separadores)
+ * @param number $grupos e.g.: si $grupos es 4 -> abcd-efgh-ijkl
+ * @param string $separador caracter separador ¡Debe ser un solo caracter!
+ * @return la cadena de texto aleatoria generada
+ */
+function textoAleatorio ($tam, $grupos = 0, $separador = "c") {
+	if ($grupos < 1) {
+		$grupos = 0;
+	} else {
+		//Sumamos uno para que mod funcione correctamente
+		$grupos += 1;
+	}
+	$cadena="";
+	for ($i=0; $i<$tam;$i++) {
+		if ($grupos != 0 && (($i+1) % $grupos == 0)) {
+			$cadena = $cadena . $separador;
+		} else {
+			$cadena = $cadena . caracterAleatorio();
+		}
+	}
+	
+	return $cadena;
+}
+
+/**
+ * @return Devuelve un caracter aleatorio [0-9a-zA-Z]
+ */
+function caracterAleatorio() {
+	$num= mt_rand(48, 109);
+	if ($num > 57) {
+		$num += 7;
+	}
+	if ($num > 90) {
+		$num += 6;
+	}
+	return chr($num);
+}

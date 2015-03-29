@@ -11,3 +11,11 @@ TABLE_PREFIX=ganar_
 [Subida de archivos]
 MAX_IMG_SIZE=262144
 RUTA_SUBIDAS=/home/usuario/ruta_img
+
+[Textos aleatorios]
+TA_TAMANO=20
+TA_GRUPOS=4
+TA_SEPARADOR=-
+
+[Otros]
+DEBUG=NO

@@ -21,7 +21,7 @@
  * @param string $cp
  * @return resource devuelve true si se ejecutó correctamente, false en caso contrario.
  */
-function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $fchaNacimiento, $email, $telefono, $ip) {
+function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $fchaNacimiento, $email, $telefono, $ip, $puerto, $cookie) {
 	global $DEBUG;
 	global $enlace;
 	global $TABLE_PREFIX;
@@ -36,8 +36,8 @@ function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $f
 		$nif= $enlace->real_escape_string($nif);
 	}
 
-	$consulta = sprintf("INSERT INTO " . $TABLE_PREFIX . "SIMPATIZANTES (NOMBRE, APELLIDO1, APELLIDO2, NIF, FECHA_NACIMIENTO, EMAIL, TELEFONO, IP_REGISTRO)
-		    VALUES ('%s','%s','%s','%s','%s','%s','%s','%s')",
+	$consulta = sprintf("INSERT INTO " . $TABLE_PREFIX . "SIMPATIZANTES (NOMBRE, APELLIDO1, APELLIDO2, NIF, FECHA_NACIMIENTO, EMAIL, TELEFONO, IP_REGISTRO, PUERTO_REGISTRO, COOKIE)
+		    VALUES ('%s','%s','%s','%s','%s','%s','%s','%s',%d, '%s')",
 			$enlace->real_escape_string($nombre),
 			$enlace->real_escape_string($apellido1),
 			$apellido2,
@@ -45,19 +45,19 @@ function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $f
 			formatearFechaBD($fchaNacimiento),
 			$enlace->real_escape_string($email),
 			$enlace->real_escape_string($telefono),
-			$enlace->real_escape_string($ip)
+			$enlace->real_escape_string($ip),
+			$puerto,
+			$enlace->real_escape_string($cookie)
 	);
 
-	if ($DEBUG) {
+	/*if ($DEBUG) {
 		echo $consulta;
-	}
+	}*/
 
 	// Ejecutar la consulta
 	$resultado = $enlace->query($consulta);
 
-	if (!$resultado && $DEBUG) {
-		echo "'" . $consulta . "' Devolvió " . $enlace->error;
-	} else {
+	if ($resultado) {
 		$idInsertado= $enlace->insert_id;
 		if ($_POST["identificacion"]=="padron") {
 			$msgIncorrecto= guardarImagenSubida("padron",$idInsertado . "_padron");
@@ -70,13 +70,6 @@ function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $f
 	
 		//Comprobamos que se hayan guardado todas las imágenes, si no es así, se elimina la entrada.
 		if ($msgIncorrecto) {
-			echo <<<EOT
-<h1 class="error">
-EOT;
-			echo $msgIncorrecto;
-			echo <<<EOT
-</h1>
-EOT;
 			borrarSimpatizante ($idInsertado, null);
 		}
 
@@ -96,14 +89,14 @@ function borrarSimpatizante ($id, $erroneo) {
 		);
 	}
 
-	if ($DEBUG) {
+	/*if ($DEBUG) {
 		echo $consulta;
-	}
+	}*/
 
 	// Ejecutar la consulta
 	$resultado = $enlace->query($consulta);
 	
-	if (!$resultado && $DEBUG) {
+	/*if (!$resultado && $DEBUG) {
 		echo "'" . $consulta . "' Devolvió " . $enlace->error;
-	}
+	}*/
 }

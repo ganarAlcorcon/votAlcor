@@ -35,9 +35,9 @@ function conectarBD () {
 			echo <<<EOT
 <h1 class="error">Ocurrió un error al acceder a la base de datos (A002)</h1>
 EOT;
-			if ($DEBUG) {
+			/*if ($DEBUG) {
 				echo $enlace->error;
-			}
+			}*/
 		} else {
 			if ($enlace->connect_errno) {
 				echo "Error de conexión: " . $enlace->connect_error;

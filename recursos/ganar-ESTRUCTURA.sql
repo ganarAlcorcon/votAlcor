@@ -1,4 +1,4 @@
--- Fecha de dump: vie mar 27 19:02:53 CET 2015
+-- Fecha de dump: dom mar 29 15:42:52 CEST 2015
 -- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ganar
@@ -80,19 +80,22 @@ CREATE TABLE `SIMPATIZANTES` (
   `NIF` char(10) DEFAULT NULL,
   `FECHA_NACIMIENTO` date NOT NULL,
   `EMAIL` varchar(100) NOT NULL,
-  `TELEFONO` varchar(45) NOT NULL,
-  `PASSWORD` varchar(45) DEFAULT NULL,
+  `TELEFONO` char(9) NOT NULL,
+  `PASSWORD` char(45) DEFAULT NULL,
   `EMAIL_V` char(1) NOT NULL DEFAULT 'N' COMMENT 'Email verificado, S o N',
   `DOCUMENTO_V` char(1) NOT NULL DEFAULT 'N' COMMENT 'Documento verificado, S o N',
   `PERSONA_V` char(1) NOT NULL DEFAULT 'N' COMMENT 'Persona verificada físicamente, S o N',
   `FECHA_ALTA` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `FECHA_BAJA` varchar(45) DEFAULT NULL,
+  `FECHA_BAJA` timestamp NULL DEFAULT NULL,
+  `IP_REGISTRO` char(16) NOT NULL,
+  `PUERTO_REGISTRO` int(6) NOT NULL,
+  `COOKIE` char(24) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `EMAIL_UNIQUE` (`EMAIL`),
   UNIQUE KEY `TELEFONO_UNIQUE` (`TELEFONO`),
   UNIQUE KEY `NIF_UNIQUE` (`NIF`),
   UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`,`APELLIDO1`,`APELLIDO2`,`FECHA_NACIMIENTO`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,4 +137,4 @@ CREATE TABLE `VOTACIONES` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-27 19:02:53
+-- Dump completed on 2015-03-29 15:42:52

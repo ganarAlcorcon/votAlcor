@@ -27,6 +27,14 @@ function inicio() {
 	} else {
 		jQuery("#divError").hide();
 	}
+	
+	if (typeof(mensajeOk) != "undefined") {
+		jQuery("#divOk").html(mensajeOk);
+		jQuery("#divOk").show();
+	} else {
+		jQuery("#divOk").hide();
+	}
+	
 }
 
 function polPriv() {
