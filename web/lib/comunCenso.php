@@ -21,33 +21,25 @@
  * @param string $cp
  * @return resource devuelve true si se ejecutó correctamente, false en caso contrario.
  */
-function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $fchaNacimiento, $email, $telefono, $ip, $puerto, $cookie) {
+function altaSimpatizanteWeb ($nombre = NULL, $apellido1 = NULL, $apellido2 = NULL, $nif = NULL, DateTime $fchaNacimiento, $email = NULL, $telefono = NULL, $ip, $puerto, $cookie) {
 	global $DEBUG;
 	global $enlace;
 	global $TABLE_PREFIX;
 
 	conectarBD();
-	
-	//Valores que pueden ser nulos
-	if ($apellido2) {
-		$apellido2= $enlace->real_escape_string($apellido2);
-	}
-	if ($nif) {
-		$nif= $enlace->real_escape_string($nif);
-	}
 
 	$consulta = sprintf("INSERT INTO " . $TABLE_PREFIX . "SIMPATIZANTES (NOMBRE, APELLIDO1, APELLIDO2, NIF, FECHA_NACIMIENTO, EMAIL, TELEFONO, IP_REGISTRO, PUERTO_REGISTRO, COOKIE)
-		    VALUES ('%s','%s','%s','%s','%s','%s','%s','%s',%d, '%s')",
-			$enlace->real_escape_string($nombre),
-			$enlace->real_escape_string($apellido1),
-			$apellido2,
-			$nif,
+		    VALUES (%s,%s,%s,%s,'%s',%s,%s,%s,%d,%s)",
+			prepararCampo($nombre),
+			prepararCampo($apellido1),
+			prepararCampo($apellido2),
+			prepararCampo($nif),
 			formatearFechaBD($fchaNacimiento),
-			$enlace->real_escape_string($email),
-			$enlace->real_escape_string($telefono),
-			$enlace->real_escape_string($ip),
+			prepararCampo($email),
+			prepararCampo($telefono),
+			prepararCampo($ip),
 			$puerto,
-			$enlace->real_escape_string($cookie)
+			prepararCampo($cookie)
 	);
 
 	/*if ($DEBUG) {
@@ -76,9 +68,16 @@ function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $f
 	} else {
 		if ($enlace->errno==1062) {
 			$devolver["mensajeError"]= "El simpatizante ya ha sido dado de alta, revise los datos introducidos y no haga trampas";
+			
+			//TODO: Insertar en una tabla de "posibles tramposos" por duplicado que cuente el número de intentos por IP, puerto y cookie
+		}
+		if ($enlace->errno==1048) {
+			$devolver["mensajeError"]= "Por favor, rellene todos los campos y no haga trampas";
+			
+			//TODO: Insertar en una tabla de "posibles tramposos" por nulo que cuente el número de intentos por IP, puerto y cookie
 		}
 		if ($DEBUG) {
-			$devolver["mensajeError"]= $devolver["mensajeError"] . ". Consulta: " . $consulta . ". Error: " . $enlace->error;
+			$devolver["mensajeError"]= $devolver["mensajeError"] . ". Consulta: " . $consulta . ". Error: " . $enlace->error . " (" . $enlace->errno . ")";
 		}
 	}
 	
@@ -108,4 +107,16 @@ function borrarSimpatizante ($id, $erroneo) {
 	/*if (!$resultado && $DEBUG) {
 		echo "'" . $consulta . "' Devolvió " . $enlace->error;
 	}*/
+}
+
+function prepararCampo ($valor) {
+	global $enlace;
+	
+	if (!isset($valor) || empty($valor) || $valor == "" || trim($valor) == "") {
+		$valor='NULL';
+	} else {
+		$valor= "'" . $enlace->real_escape_string($valor) . "'";
+	}
+	
+	return $valor;
 }

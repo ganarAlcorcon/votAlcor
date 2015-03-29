@@ -54,15 +54,20 @@ if (!isset($_COOKIE["_suef"])) {
 					if (!$fchaNac) {
 						$fchaNac= leerFechaBD($_POST["fechaNacimiento"]);
 					}
-				
-					//Damos de alta al simpatizante
-					$resultado= altaSimpatizanteWeb ($_POST["nombre"], $_POST["apellido1"], $_POST["apellido2"], $_POST["nif"],
-						$fchaNac, $_POST["email"], $_POST["telefono"], $_SERVER["REMOTE_ADDR"], $_SERVER["REMOTE_PORT"], $_COOKIE["_suef"]);
 					
-					if ($resultado["correcto"]) {
-						echo "mensajeOk='" . $_POST["nombre"] . " ha sido dado de alta correctamente';";
+					if (!$fchaNac) {
+						echo "mensajeError='Fecha " . $_POST["fechaNacimiento"] . " incorrecta. El formato es dd/mm/aaaa';";
 					} else {
-						echo "mensajeError=\"Ocurrió un error al dar de alta al simpatizante. " . str_replace(array("\n","\r")," ",$resultado["mensajeError"]) . " \";";
+						//Damos de alta al simpatizante
+						$resultado= altaSimpatizanteWeb ($_POST["nombre"], $_POST["apellido1"], $_POST["apellido2"], $_POST["nif"],
+							$fchaNac, $_POST["email"], $_POST["telefono"], $_SERVER["REMOTE_ADDR"], $_SERVER["REMOTE_PORT"],
+							$_COOKIE["_suef"]);
+						
+						if ($resultado["correcto"]) {
+							echo "mensajeOk='" . $_POST["nombre"] . " ha sido dado de alta correctamente';";
+						} else {
+							echo "mensajeError=\"Ocurrió un error al dar de alta al simpatizante. " . str_replace(array("\n","\r")," ",$resultado["mensajeError"]) . " \";";
+						}
 					}
 				}
 			}
