@@ -16,6 +16,7 @@ RUTA_SUBIDAS=/home/usuario/ruta_img
 TA_TAMANO=20
 TA_GRUPOS=4
 TA_SEPARADOR=-
+RUTA_VERIF_MAIL=localhost/testGA/censo/verificador.php
 
 [Otros]
 DEBUG=NO

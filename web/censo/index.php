@@ -11,7 +11,7 @@ if (!isset($_COOKIE["_suef"])) {
 	//Recuperamos el dominio
 	$domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
 	
-	$idAleatorio=textoAleatorio($CONFIG["TA_TAMANO"],$CONFIG["TA_GRUPOS"],$CONFIG["TA_SEPARADOR"]);
+	$idAleatorio=textoAleatorio($CONFIG["CO_TAMANO"],$CONFIG["CO_GRUPOS"],$CONFIG["CO_SEPARADOR"]);
 	
 	//Enviamos la cookie
 	setcookie('_suef', $idAleatorio, time()+60*60*24*365, '/', $domain, false);
