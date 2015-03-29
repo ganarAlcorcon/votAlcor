@@ -70,12 +70,21 @@ function altaSimpatizanteWeb ($nombre, $apellido1, $apellido2, $nif, DateTime $f
 	
 		//Comprobamos que se hayan guardado todas las imágenes, si no es así, se elimina la entrada.
 		if ($msgIncorrecto) {
+			$devolver["mensajeError"]= $msgIncorrecto;
 			borrarSimpatizante ($idInsertado, null);
 		}
-
+	} else {
+		if ($enlace->errno==1062) {
+			$devolver["mensajeError"]= "El simpatizante ya ha sido dado de alta, revise los datos introducidos y no haga trampas";
+		}
+		if ($DEBUG) {
+			$devolver["mensajeError"]= $devolver["mensajeError"] . ". Consulta: " . $consulta . ". Error: " . $enlace->error;
+		}
 	}
+	
+	$devolver["correcto"] = $resultado && !$msgIncorrecto;
 
-	return $resultado;
+	return $devolver;
 }
 
 function borrarSimpatizante ($id, $erroneo) {

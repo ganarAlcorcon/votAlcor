@@ -59,10 +59,10 @@ if (!isset($_COOKIE["_suef"])) {
 					$resultado= altaSimpatizanteWeb ($_POST["nombre"], $_POST["apellido1"], $_POST["apellido2"], $_POST["nif"],
 						$fchaNac, $_POST["email"], $_POST["telefono"], $_SERVER["REMOTE_ADDR"], $_SERVER["REMOTE_PORT"], $_COOKIE["_suef"]);
 					
-					if (!$resultado) {
-						echo "mensajeError='Ocurrió un error al dar de alta al simpatizante. Vuelva a intentarlo más tarde';";
-					} else {
+					if ($resultado["correcto"]) {
 						echo "mensajeOk='" . $_POST["nombre"] . " ha sido dado de alta correctamente';";
+					} else {
+						echo "mensajeError=\"Ocurrió un error al dar de alta al simpatizante. " . str_replace(array("\n","\r")," ",$resultado["mensajeError"]) . " \";";
 					}
 				}
 			}
@@ -71,7 +71,7 @@ if (!isset($_COOKIE["_suef"])) {
 		</script>
 	</head>
 	<body class="container" onload="inicio()">
-		<div id="divError" class="alert alert-warning"></div>
+		<div id="divError" class="alert alert-danger"></div>
 		<div id="divOk" class="alert alert-success"></div>
 		<form action="" accept-charset="utf-8" method="post" enctype="multipart/form-data" role="form" class="form-horizontal" >
 			<div class="form-group">
