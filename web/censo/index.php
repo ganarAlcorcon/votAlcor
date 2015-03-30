@@ -29,11 +29,14 @@ if (!isset($_COOKIE["_suef"])) {
 	<head>
 		<title>Nuevo simpatizante Ganar Alcorcón</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="../css/jQueryUI/jquery-ui.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/bootstrap-theme.min.css">
 		<link rel="stylesheet" type="text/css" href="../css/estilo.css">
 		
 		<script type="text/javascript" src="../js/ext/jQuery/jquery.min.js" ></script>
+		<script type="text/javascript" src="../js/ext/jQuery/jquery-ui.min.js" ></script>
+		<script type="text/javascript" src="../js/ext/jQuery/datepicker-es.js" ></script>
 		<script type="text/javascript" src="../js/ext/bootstrap.min.js" ></script>
 		<script type="text/javascript" src="../js/censoWeb.js" ></script>
 		
@@ -106,7 +109,7 @@ if (!isset($_COOKIE["_suef"])) {
 			<div class="form-group">
 				<label for="fechaNacimiento" class="control-label col-sm-2">Fecha de nacimiento: </label>
 				<div class="col-sm-10">
-					<input id="fechaNacimiento" name="fechaNacimiento" type="text" class="form-control" size="50" maxlength="50" autocomplete="off" required="required" />
+					<input id="fechaNacimiento" name="fechaNacimiento" type="text" class="form-control" size="50" maxlength="50" autocomplete="off" required="required" placeholder="Introduzca una fecha en formato dd/mm/aaaa" pattern=[0-9]{1,2}/([1-9]|1[0-2]|0[1-9])/[1,2][0-9]{3} />
 				</div>
 			</div>
 			<div class="form-group">

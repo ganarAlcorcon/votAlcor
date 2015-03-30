@@ -4,7 +4,7 @@ if (!(include_once 'comunAdmin.php')) {
 }
 
 $fallo=false;
-if ($_POST["email"]){
+if (isset($_POST["email"])){
 	if ($DEBUG) {
 		echo "autenticando a " . $_POST["email"];
 	}

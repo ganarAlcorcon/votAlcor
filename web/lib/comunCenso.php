@@ -63,7 +63,7 @@ function altaSimpatizanteWeb ($nombre = NULL, $apellido1 = NULL, $apellido2 = NU
 		//Comprobamos que se hayan guardado todas las imágenes, si no es así, se elimina la entrada.
 		if ($msgIncorrecto) {
 			$devolver["mensajeError"]= $msgIncorrecto;
-			borrarSimpatizante ($idInsertado, null);
+			borrarSimpatizante ($idInsertado, true);
 		} else {
 			generarVerificacionMail($idInsertado,prepararCampo($email));
 		}

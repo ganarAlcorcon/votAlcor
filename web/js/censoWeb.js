@@ -35,6 +35,12 @@ function inicio() {
 		jQuery("#divOk").hide();
 	}
 	
+	jQuery("#fechaNacimiento").datepicker({
+		dateFormat: "dd/mm/yy",
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "-120:-15"
+	});
 }
 
 function polPriv() {

@@ -36,7 +36,7 @@ if (isset($_REQUEST['_SESSION'])) die("Inyección de sesión detectada");
  * @return boolean
  */
 function autenticado() {
-	return $_SESSION["nombre"] != null && $_SESSION["autenticado"]===true;
+	return isset($_SESSION["nombre"]) && $_SESSION["nombre"] != null && $_SESSION["autenticado"]===true;
 }
 
 /**
