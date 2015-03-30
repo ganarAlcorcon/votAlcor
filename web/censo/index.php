@@ -18,7 +18,6 @@ if (!isset($_COOKIE["_suef"])) {
 	
 	//La guardamos por si fuera necesaria en esta conexión
 	$_COOKIE["_suef"] = $idAleatorio;
-	
 }
 
 ?>
@@ -61,16 +60,25 @@ if (!isset($_COOKIE["_suef"])) {
 					if (!$fchaNac) {
 						echo "mensajeError='Fecha " . $_POST["fechaNacimiento"] . " incorrecta. El formato es dd/mm/aaaa';";
 					} else {
-						//Damos de alta al simpatizante
-						$resultado= altaSimpatizanteWeb ($_POST["nombre"], $_POST["apellido1"], $_POST["apellido2"], $_POST["nif"],
-							$fchaNac, $_POST["email"], $_POST["telefono"], $_SERVER["REMOTE_ADDR"], $_SERVER["REMOTE_PORT"],
-							$_COOKIE["_suef"]);
+						//Comprobamos el NIF
+						$valCheck= check_nif_cif_nie($_POST["nif"]);
 						
-						if ($resultado["correcto"]) {
-							echo "mensajeOk='" . $_POST["nombre"] . " ha sido dado de alta correctamente';";
+						if ($valCheck == 1 || $valCheck == 3) {
+							//Damos de alta al simpatizante
+							$resultado= altaSimpatizanteWeb ($_POST["nombre"], $_POST["apellido1"], $_POST["apellido2"], $_POST["nif"],
+								$fchaNac, $_POST["email"], $_POST["telefono"], $_SERVER["REMOTE_ADDR"], $_SERVER["REMOTE_PORT"],
+								$_COOKIE["_suef"]);
+							
+							if ($resultado["correcto"]) {
+								echo "mensajeOk='" . $_POST["nombre"] . " ha sido dado de alta correctamente';";
+							} else {
+								echo "mensajeError=\"Ocurrió un error al dar de alta al simpatizante. " . str_replace(array("\n","\r")," ",$resultado["mensajeError"]) . " \";";
+							}
+						} else if ($valCheck == 2){
+							echo "mensajeError=\"Ocurrió un error al dar de alta al simpatizante. Los CIF no son válidos\";";
 						} else {
-							echo "mensajeError=\"Ocurrió un error al dar de alta al simpatizante. " . str_replace(array("\n","\r")," ",$resultado["mensajeError"]) . " \";";
-						}
+							echo "mensajeError=\"Ocurrió un error al dar de alta al simpatizante. El NIF introducido no es correcto\";";
+						}					
 					}
 				}
 			}
@@ -103,7 +111,7 @@ if (!isset($_COOKIE["_suef"])) {
 			<div class="form-group">
 				<label for="nif" class="control-label col-sm-2">NIF: </label>
 				<div class="col-sm-10">
-					<input id="nif" name="nif" type="text" class="form-control" size="10" maxlength="10" autocomplete="off" />
+					<input id="nif" name="nif" type="text" class="form-control" size="10" maxlength="10" autocomplete="off" onchange="validar()" />
 				</div>
 			</div>
 			<div class="form-group">

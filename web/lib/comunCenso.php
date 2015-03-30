@@ -65,7 +65,7 @@ function altaSimpatizanteWeb ($nombre = NULL, $apellido1 = NULL, $apellido2 = NU
 			$devolver["mensajeError"]= $msgIncorrecto;
 			borrarSimpatizante ($idInsertado, true);
 		} else {
-			generarVerificacionMail($idInsertado,prepararCampo($email));
+			generarVerificacionMail($idInsertado,$enlace->real_escape_string($email));
 		}
 	} else {
 		if ($enlace->errno==1062) {
@@ -93,6 +93,8 @@ function altaSimpatizanteWeb ($nombre = NULL, $apellido1 = NULL, $apellido2 = NU
 function borrarSimpatizante ($id, $erroneo) {
 	global $enlace;
 	global $TABLE_PREFIX;
+
+	conectarBD();
 	
 	if ($erroneo) {
 		$consulta = sprintf("DELETE FROM " . $TABLE_PREFIX . "SIMPATIZANTES WHERE ID=%d",
@@ -136,6 +138,8 @@ function generarVerificacionMail ($idSimpatizante, $email) {
 	global $CONFIG;
 	global $enlace;
 	global $TABLE_PREFIX;
+
+	conectarBD();
 	
 	$clave= textoAleatorio($CONFIG["EM_TAMANO"],$CONFIG["EM_GRUPOS"],$CONFIG["EM_SEPARADOR"]);
 	
@@ -160,7 +164,7 @@ function generarVerificacionMail ($idSimpatizante, $email) {
 </head>
 <body>
   <p>¡Enhorabuena! Se ha registrado correctamente como simpatizante de Ganar Alcorcón</p>
-  <p>Para completar el registro necesitamos que verifique su dirección de correo pinchando en <a href="' . $CONFIG["RUTA_VERIF_MAIL"] . '?verificar=' . $clave .'">este enlace</a>.</p>
+  <p>Para completar el registro necesitamos que verifique su dirección de correo pinchando en <a href="' . $CONFIG["RUTA_VERIF_MAIL"] . '?verificar=' . $clave .'&tipo=E">este enlace</a>.</p>
   <p>No responda a este correo, la dirección no admite correo entrante. Si usted no se ha registrado, puede ignorar este email.</p>
   <p></p>
   <p>Ganar Alcorcón</p>
@@ -184,4 +188,49 @@ function enviarMail($email, $titulo, $mensaje) {
 	
 	// Enviarlo
 	mail($email, $titulo, $mensaje, $cabeceras);
+}
+
+function verificarEmail($clave,$tipo) {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+
+	conectarBD();
+	
+	//Buscamos la clave
+	$consulta = sprintf("SELECT ID_SIMP FROM " . $TABLE_PREFIX . "VERIFICACIONES WHERE CLAVE=%s AND TIPO=%s",
+			prepararCampo($clave),
+			prepararCampo($tipo)
+	);
+	
+	// Ejecutar la consulta
+	$resultado = $enlace->query($consulta);
+	
+	if ($resultado) {
+		if ($reg = $resultado->fetch_assoc()) {
+			$idUsuario=$reg["ID_SIMP"];
+			
+			if (isset($idUsuario) && $idUsuario!=NULL) {
+				//Si la encontramos, actualizamos el campo
+				$consulta = sprintf("UPDATE " . $TABLE_PREFIX . "SIMPATIZANTES SET EMAIL_V='S' WHERE ID=%d",
+						$idUsuario
+				);
+				
+				$resultado = $enlace->query($consulta);
+				
+				if ($resultado) {
+					//Si lo hemos actualizado, podemos borrar el campo
+					$consulta = sprintf("DELETE FROM " . $TABLE_PREFIX . "VERIFICACIONES WHERE CLAVE=%s AND TIPO=%s",
+							prepararCampo($clave),
+							prepararCampo($tipo)
+					);
+					
+					$resultado = $enlace->query($consulta);
+					
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
