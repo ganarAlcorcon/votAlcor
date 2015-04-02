@@ -18,5 +18,8 @@ TA_GRUPOS=4
 TA_SEPARADOR=-
 RUTA_VERIF_MAIL=localhost/testGA/censo/verificador.php
 
+[Verificaciones]
+VERIFICACIONES_F=/home/usuario/ruta_img/verificando
+
 [Otros]
 DEBUG=NO

@@ -11,7 +11,7 @@ if (!(include_once dirname(__FILE__).'/../../lib/comunCenso.php')) {
 <!DOCTYPE html>
 <html lang="es">
 	<head>
-		<title>Administración | Censo</title>
+		<title>Administración | Verificar censo web</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<link rel="stylesheet" type="text/css" href="../../css/estilo.css">
 	</head>
@@ -22,14 +22,10 @@ if (!autenticado()) {?>
 	<a href="../index.php">Iniciar sesión</a>
 <?php 
 } else {
+	
 ?>
 	<h1>Administración del censo</h1>
-	<!-- <a href="alta.php">Nuevo simpatizante</a><br>
-	<a href="editar.php">Modificar datos de simpatizante</a><br>
-	<a href="baja.php">Baja de simpatizante</a><br>
-	<a href="consulta.php">Consulta simpatizantes</a><br> -->
-	<a href="verificarCenso.php">Verificar censo web</a>
-
+	
 <?php 
 }
 ?>

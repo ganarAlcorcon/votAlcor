@@ -10,10 +10,11 @@ session_start();
 if ((isset($_GET["salir"]) && $_GET["salir"]==="true") || (isset($_POST["salir"]) && $_POST["salir"]==="true")) {
 	$_SESSION["autenticado"]=false;
 	unset($_SESSION["nombre"]);
+	session_unset();
 }
 
 //Comprobar la expiración de la sesión
-if (isset ($_SESSION["time"]) && $_SESSION["autenticado"]==true) {
+if (isset ($_SESSION["time"]) && isset ($_SESSION["autenticado"]) && $_SESSION["autenticado"]==true) {
 	if ($_SESSION["time"] + $TIMEOUT_SESION >= time()) {
 		$_SESSION["time"]=time();
 	} else {

@@ -3,6 +3,11 @@ if (!(include_once 'util.php')) {
 	die ("Falta el archivo util.php");
 }
 
+if (!(include_once 'errores.php')) {
+        die ("Falta el archivo errores.php");
+}
+
+
 // Variables globales
 global $enlace;
 global $DEBUG;

@@ -127,9 +127,9 @@ if (!isset($_COOKIE["_suef"])) {
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="telefono" class="control-label col-sm-2">Teléfono: </label>
+				<label for="telefono" class="control-label col-sm-2">Teléfono móvil: </label>
 				<div class="col-sm-10">
-					<input id="telefono" name="telefono" type="text" class="form-control" size="50" maxlength="50" autocomplete="off" required="required" />
+					<input id="telefono" name="telefono" type="text" class="form-control" size="50" maxlength="50" autocomplete="off" required="required" placeholder="Teléfono móvil completo (9 cifras) sin espacios" pattern="[0-9]{9}" />
 				</div>
 			</div>
 			<div class="form-group">

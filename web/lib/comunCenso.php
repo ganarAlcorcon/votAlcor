@@ -71,13 +71,13 @@ function altaSimpatizanteWeb ($nombre = NULL, $apellido1 = NULL, $apellido2 = NU
 		if ($enlace->errno==1062) {
 			$devolver["mensajeError"]= "El simpatizante ya ha sido dado de alta, revise los datos introducidos y no haga trampas";
 			
-			error_log("Intento de introducir simpatizante duplicado: ".$nombre." ".$apellido1." ".$apellido2." ".$nif." ".formatearFecha($fchaNacimiento)." ".$email." ".$telefono." Desde " . $ip.":".$puerto." ".$cookie.": ".$enlace->error);
+			trazar("Intento de introducir simpatizante duplicado: ".$nombre." ".$apellido1." ".$apellido2." ".$nif." ".formatearFecha($fchaNacimiento)." ".$email." ".$telefono." Desde " . $ip.":".$puerto." ".$cookie.": ".$enlace->error);
 			//TODO: Insertar en una tabla de "posibles tramposos" por duplicado que cuente el número de intentos por IP, puerto y cookie
 		}
 		if ($enlace->errno==1048) {
 			$devolver["mensajeError"]= "Por favor, rellene todos los campos y no haga trampas";
 
-			error_log("Intento de introducir campos nulos: ".$nombre." ".$apellido1." ".$apellido2." ".$nif." ".formatearFecha($fchaNacimiento)." ".$email." ".$telefono." Desde " . $ip.":".$puerto." ".$cookie.": ".$enlace->error);
+			trazar("Intento de introducir campos nulos: ".$nombre." ".$apellido1." ".$apellido2." ".$nif." ".formatearFecha($fchaNacimiento)." ".$email." ".$telefono." Desde " . $ip.":".$puerto." ".$cookie.": ".$enlace->error);
 			//TODO: Insertar en una tabla de "posibles tramposos" por nulo que cuente el número de intentos por IP, puerto y cookie
 		}
 		if ($DEBUG) {
@@ -114,7 +114,7 @@ function borrarSimpatizante ($id, $erroneo) {
 	$resultado = $enlace->query($consulta);
 	
 	if (!$resultado) {
-		error_log("Error al borrar usuario: " . $id. " ".$consulta. " -> ".$enlace->error);
+		trazar("Error al borrar usuario: " . $id. " ".$consulta. " -> ".$enlace->error);
 	}
 	
 	/*if (!$resultado && $DEBUG) {
@@ -154,7 +154,7 @@ function generarVerificacionMail ($idSimpatizante, $email) {
 	$resultado = $enlace->query($consulta);
 	
 	if (!$resultado) {
-		error_log("Error al guardar verificación de: " . $idSimpatizante. " ".$consulta. " -> ".$enlace->error);
+		trazar("Error al guardar verificación de: " . $idSimpatizante. " ".$consulta. " -> ".$enlace->error);
 	} else {
 
 		$mensaje = '
@@ -232,5 +232,122 @@ function verificarEmail($clave,$tipo) {
 			}
 		}
 	}
+	return false;
+}
+
+function bloquearFichero ($ruta, $timeout = 5) {
+	$fd = fopen($ruta,'a+');
+
+	if (!$fd) {
+		return false;
+	}
+	// loop until we can successfully make the lock directory 
+	$locked = 0;
+	$count = 0;
+	while (! $locked) {
+	    if (@mkdir($ruta . '.lock',0777)) {
+	        $locked = 1;
+	    } else if ($count >= $timeout) {
+			return false;
+	    } else {
+	     	$count++;
+	        sleep(1);
+	    }
+	}
+	
+	return $fd;
+	
+}
+
+function desbloquearFichero ($ruta, $fd) {
+	if (! fclose($fd)) {
+		rmdir($ruta . '.lock');
+	}
+	rmdir($ruta . '.lock');
+}
+
+function leerVerificando($fd) {
+	$verificando= array();
+	
+	//Leemos línea a línea
+	while ($linea= fgets($fd)) {
+		//Leemos los ids
+		$aLinea= explode(":",$linea);
+		if ($aLinea && count($aLinea)>1) {
+			//Separamos los ids
+			$ids= explode(",",$aLinea[1]);
+			if ($ids && count($ids)>0) {
+				//Guardamos los ids
+				$verificando= array_merge($verificando,$ids);
+			}
+		}
+	}
+	
+	return $verificando;
+}
+
+function guardarVerificando($fd, $simpatizantes, $usuario) {
+	$cadena= $usuario . ":";
+	foreach ($simpatizantes as $simpatizante) {
+		$cadena= $cadena.$simpatizante["ID"].",";
+	}
+	return fwrite ($fd,substr($cadena,0,strlen($cadena)-1) . PHP_EOL);
+}
+
+
+function iniciaVerificacion($numRegistros) {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	global $DEBUG;
+	
+	unset($_SESSION["misSimpatizantes"]);
+	unset($_SESSION["numSimpatizantes"]);
+
+	conectarBD();
+	
+	$fd=bloquearFichero ($CONFIG["VERIFICACIONES_F"]);
+	
+	if ($fd) {
+		try {
+			$verificando= leerVerificando($fd);
+			
+			$consulta= "SELECT * FROM " . $TABLE_PREFIX . "SIMPATIZANTES WHERE FECHA_BAJA IS NULL AND DOCUMENTO_V IN ('N','P')";
+			
+			if ($verificando) {
+				$consulta= $consulta . " AND ID NOT IN (";
+				foreach ($verificando as $id) {
+					$consulta= $consulta.$id.",";
+				}
+				$consulta= substr($consulta, 0, strlen($consulta) -1) . ")";
+			}
+			
+			if ($numRegistros != -1) {
+				$consulta = sprintf($consulta . " LIMIT %d", $numRegistros);
+			}
+			
+			$resultado = $enlace->query($consulta);
+			
+			if ($resultado) {
+				$cuenta= 0;
+				$misSimpatizantes= array();
+				while ($simp= $resultado->fetch_assoc()) {
+					$misSimpatizantes[]= $simp;
+					$cuenta++;
+				}
+				
+				if (guardarVerificando ($fd, $misSimpatizantes,$_SESSION["nombre"])) {
+					$_SESSION["misSimpatizantes"]=$misSimpatizantes;
+					$_SESSION["numSimpatizantes"]=$cuenta;
+					return true;
+				}
+			}
+		} catch (Exception $e) {
+			desbloquearFichero($CONFIG["VERIFICACIONES_F"],$fd);
+		} finally {
+			desbloquearFichero($CONFIG["VERIFICACIONES_F"],$fd);
+		}
+	}
+	
 	return false;
 }
