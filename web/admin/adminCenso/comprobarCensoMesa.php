@@ -30,6 +30,9 @@ if (!autenticado()) {?>
 	<h1 class="error">Debe iniciar sesión para entrar aquí</h1>
 	<a href="../../index.php">Iniciar sesión</a>
 <?php 
+} elseif (!permitido('MESA')) {?>
+<h1 class="error">No tiene permisos para comprobar el censo en mesas</h1>
+<?php 
 } else {
 	if (isset($_POST["mesa"])) {
 		//Inicializar mesa
