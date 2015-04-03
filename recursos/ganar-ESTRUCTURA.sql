@@ -1,4 +1,4 @@
--- Fecha de dump: lun mar 30 01:07:36 CEST 2015
+-- Fecha de dump: vie abr 3 19:56:22 CEST 2015
 -- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ganar
@@ -24,13 +24,37 @@ DROP TABLE IF EXISTS `CENSO`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `CENSO` (
+  `NOMBRE` varchar(50) NOT NULL,
+  `APELLIDO1` varchar(50) NOT NULL,
+  `APELLIDO2` varchar(50) DEFAULT NULL,
+  `NIF` char(10) DEFAULT NULL,
+  `FECHA_NACIMIENTO` date NOT NULL,
   `ID_VOTACION` int(11) NOT NULL,
-  `ID_SIMP` int(11) NOT NULL,
-  PRIMARY KEY (`ID_VOTACION`,`ID_SIMP`),
-  KEY `fk_CENSO_2_idx` (`ID_SIMP`),
-  CONSTRAINT `fk_CENSO_1` FOREIGN KEY (`ID_VOTACION`) REFERENCES `VOTACIONES` (`ID`) ON DELETE CASCADE,
-  CONSTRAINT `fk_CENSO_2` FOREIGN KEY (`ID_SIMP`) REFERENCES `SIMPATIZANTES` (`ID`)
+  `HA_VOTADO` timestamp NULL DEFAULT NULL,
+  `ID_MESA` int(11) DEFAULT NULL,
+  UNIQUE KEY `NIF_UNIQUE` (`NIF`),
+  UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`,`APELLIDO1`,`APELLIDO2`,`FECHA_NACIMIENTO`),
+  KEY `fk_CENSO_1_idx` (`ID_MESA`),
+  KEY `fk_CENSO_2_idx` (`ID_VOTACION`),
+  CONSTRAINT `fk_CENSO_1` FOREIGN KEY (`ID_MESA`) REFERENCES `MESAS` (`ID`),
+  CONSTRAINT `fk_CENSO_2` FOREIGN KEY (`ID_VOTACION`) REFERENCES `VOTACIONES` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `MESAS`
+--
+
+DROP TABLE IF EXISTS `MESAS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `MESAS` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(50) NOT NULL,
+  `LUGAR` varchar(200) NOT NULL,
+  `DESCRIPCION` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +119,7 @@ CREATE TABLE `SIMPATIZANTES` (
   UNIQUE KEY `TELEFONO_UNIQUE` (`TELEFONO`),
   UNIQUE KEY `NIF_UNIQUE` (`NIF`),
   UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`,`APELLIDO1`,`APELLIDO2`,`FECHA_NACIMIENTO`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +150,7 @@ CREATE TABLE `VOTACIONES` (
   `NOMBRE` varchar(45) NOT NULL,
   `DESCRIPCION` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -138,4 +162,4 @@ CREATE TABLE `VOTACIONES` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-03-30  1:07:36
+-- Dump completed on 2015-04-03 19:56:22
