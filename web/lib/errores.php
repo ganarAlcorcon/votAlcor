@@ -5,10 +5,15 @@
 
 function trazar($mensaje){
 	$time=date('d M Y H:i:s');
-	$errfile=fopen('errors.csv','a');
-	fputs($errfile,''.$time.','.$mensaje.'
+	
+	$errfile=@fopen('errors.csv','a');
+	if ($errfile) {
+		fputs($errfile,''.$time.','.$mensaje.'
 ');
-	fclose($errfile);
+		fclose($errfile);
+	}
+
+	error_log($mensaje);
 }
 
 

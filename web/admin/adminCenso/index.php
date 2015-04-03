@@ -28,7 +28,8 @@ if (!autenticado()) {?>
 	<a href="editar.php">Modificar datos de simpatizante</a><br>
 	<a href="baja.php">Baja de simpatizante</a><br>
 	<a href="consulta.php">Consulta simpatizantes</a><br> -->
-	<a href="verificarCenso.php">Verificar censo web</a>
+	<a href="verificarCenso.php">Verificar censo web</a><br>
+	<a href="comprobarCensoMesa.php">Comprobar censo para votación en mesa</a>
 
 <?php 
 }

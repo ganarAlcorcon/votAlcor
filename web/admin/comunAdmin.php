@@ -22,7 +22,7 @@ if (isset ($_SESSION["time"]) && isset ($_SESSION["autenticado"]) && $_SESSION["
 			echo "expiró en " . date('H:i:s',$_SESSION["time"] + $TIMEOUT_SESION);
 		}
 		session_destroy();
-		die("<html><head><meta http-equiv='refresh' content='3; url=".$_SERVER['DOCUMENT_ROOT']."/admin'></head><body><h1 class='error'>La sesión ha expirado, vuelva a conectarse</h1></body></html>");
+		die("<html><head><meta http-equiv='refresh' content='3; url='/admin'></head><body><h1 class='error'>La sesión ha expirado, vuelva a conectarse</h1></body></html>");
 	}
 } else {
 	$_SESSION["time"]=time();

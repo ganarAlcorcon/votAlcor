@@ -12,14 +12,20 @@ TABLE_PREFIX=ganar_
 MAX_IMG_SIZE=262144
 RUTA_SUBIDAS=/home/usuario/ruta_img
 
-[Textos aleatorios]
-TA_TAMANO=20
-TA_GRUPOS=4
-TA_SEPARADOR=-
-RUTA_VERIF_MAIL=localhost/testGA/censo/verificador.php
+[COOKIE]
+CO_TAMANO=24
+CO_GRUPOS=4
+CO_SEPARADOR=-
+
+[EMAIL]
+EM_TAMANO=72
+EM_GRUPOS=4
+EM_SEPARADOR=-
+RUTA_VERIF_MAIL=localhost/testGA/censo/verificar.php
 
 [Verificaciones]
 VERIFICACIONES_F=/home/usuario/ruta_img/verificando
 
 [Otros]
 DEBUG=NO
+VOTACION=1

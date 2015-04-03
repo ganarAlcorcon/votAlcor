@@ -122,18 +122,6 @@ function borrarSimpatizante ($id, $erroneo) {
 	}*/
 }
 
-function prepararCampo ($valor) {
-	global $enlace;
-	
-	if (!isset($valor) || empty($valor) || $valor == "" || trim($valor) == "") {
-		$valor='NULL';
-	} else {
-		$valor= "'" . $enlace->real_escape_string($valor) . "'";
-	}
-	
-	return $valor;
-}
-
 function generarVerificacionMail ($idSimpatizante, $email) {
 	global $CONFIG;
 	global $enlace;

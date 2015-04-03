@@ -53,6 +53,25 @@ EOT;
 	}
 }
 
+
+/**
+ * Prepara un campo de texto para su inserción en base de datos.
+ * ¡ATENCIÓN! <b>PONE COMILLAS</b>
+ * @param unknown $valor
+ * @return string
+ */
+function prepararCampo ($valor) {
+	global $enlace;
+
+	if (!isset($valor) || empty($valor) || $valor == "" || trim($valor) == "") {
+		$valor='NULL';
+	} else {
+		$valor= "'" . $enlace->real_escape_string($valor) . "'";
+	}
+
+	return $valor;
+}
+
 /**
  * Guarda un fichero enviado con nombre $nombre en la ruta definida en la configuración con nombre $nombreFichero y su extensión real.
  * @param $nombre Nombre del campo
