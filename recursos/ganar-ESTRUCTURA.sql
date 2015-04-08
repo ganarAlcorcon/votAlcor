@@ -1,4 +1,4 @@
--- Fecha de dump: vie abr 3 19:56:22 CEST 2015
+-- Fecha de dump: mié abr 8 12:49:43 CEST 2015
 -- MySQL dump 10.13  Distrib 5.5.41, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: ganar
@@ -15,6 +15,22 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `CANDIDATOS`
+--
+
+DROP TABLE IF EXISTS `CANDIDATOS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `CANDIDATOS` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NOMBRE_COMPLETO` varchar(150) NOT NULL,
+  `BIOGRAFIA` varchar(4000) NOT NULL,
+  `MOTIVACIONES` varchar(4000) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `CENSO`
@@ -69,7 +85,7 @@ CREATE TABLE `PERMISOS` (
   `NOMBRE` varchar(10) NOT NULL,
   `DESCRIPCION` varchar(200) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +135,7 @@ CREATE TABLE `SIMPATIZANTES` (
   UNIQUE KEY `TELEFONO_UNIQUE` (`TELEFONO`),
   UNIQUE KEY `NIF_UNIQUE` (`NIF`),
   UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`,`APELLIDO1`,`APELLIDO2`,`FECHA_NACIMIENTO`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,8 +165,26 @@ CREATE TABLE `VOTACIONES` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `NOMBRE` varchar(45) NOT NULL,
   `DESCRIPCION` varchar(200) DEFAULT NULL,
+  `INICIO` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `FIN` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `VOTOS`
+--
+
+DROP TABLE IF EXISTS `VOTOS`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `VOTOS` (
+  `ID_SIMPATIZANTE` int(11) NOT NULL,
+  `CABEZA_LISTA` varchar(3) DEFAULT NULL,
+  `RESTO_LISTA` varchar(52) DEFAULT NULL,
+  PRIMARY KEY (`ID_SIMPATIZANTE`),
+  CONSTRAINT `fk_VOTOS_1` FOREIGN KEY (`ID_SIMPATIZANTE`) REFERENCES `SIMPATIZANTES` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -162,4 +196,4 @@ CREATE TABLE `VOTACIONES` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-03 19:56:22
+-- Dump completed on 2015-04-08 12:49:43
