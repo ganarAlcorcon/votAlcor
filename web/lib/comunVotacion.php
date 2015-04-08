@@ -103,6 +103,12 @@ function votaEnMesa($nombre, $apellido1, $apellido2 ,$nif, $fchaNac, $mesa) {
 
 
 function borrarCensoError($nombre, $apellido1, $apellido2 ,$nif, $fchaNac, $mesa) {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	global $DEBUG;
+
+	$fchaNac= formatearFechaBD($fchaNac);
 	$consulta = sprintf ("DELETE FROM " . $TABLE_PREFIX . "CENSO WHERE NOMBRE=%s AND APELLIDO1=%s AND FECHA_NACIMIENTO=%s AND ID_VOTACION=%d AND ID_MESA=%d AND HA_VOTADO IS NOT NULL",
 			prepararCampo($nombre),
 			prepararCampo($apellido1),
