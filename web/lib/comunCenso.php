@@ -164,20 +164,6 @@ function generarVerificacionMail ($idSimpatizante, $email) {
 	}
 }
 
-function enviarMail($email, $titulo, $mensaje) {
-	
-	// Para enviar un correo HTML, debe establecerse la cabecera Content-type
-	$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
-	$cabeceras .= 'Content-type: text/html; charset=utf-8' . "\r\n";
-	
-	// Cabeceras adicionales
-	//$cabeceras .= 'To: Mary <mary@example.com>, Kelly <kelly@example.com>' . "\r\n";
-	$cabeceras .= 'From: No-reply Ganar Alcorcón <no-reply@ganaralcorcon.com>' . "\r\n";
-	
-	// Enviarlo
-	mail($email, $titulo, $mensaje, $cabeceras);
-}
-
 function verificarEmail($clave,$tipo) {
 	global $CONFIG;
 	global $enlace;
@@ -199,12 +185,17 @@ function verificarEmail($clave,$tipo) {
 			$idUsuario=$reg["ID_SIMP"];
 			
 			if (isset($idUsuario) && $idUsuario!=NULL) {
-				//Si la encontramos, actualizamos el campo
-				$consulta = sprintf("UPDATE " . $TABLE_PREFIX . "SIMPATIZANTES SET EMAIL_V='S' WHERE ID=%d",
-						$idUsuario
-				);
 				
-				$resultado = $enlace->query($consulta);
+				if ($tipo == 'E') {
+					//Si la encontramos, actualizamos el campo
+					$consulta = sprintf("UPDATE " . $TABLE_PREFIX . "SIMPATIZANTES SET EMAIL_V='S' WHERE ID=%d",
+							$idUsuario
+					);
+					
+					$resultado = $enlace->query($consulta);
+				} else {
+					$resultado= true;
+				}
 				
 				if ($resultado) {
 					//Si lo hemos actualizado, podemos borrar el campo

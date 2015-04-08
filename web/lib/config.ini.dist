@@ -26,6 +26,15 @@ RUTA_VERIF_MAIL=localhost/testGA/censo/verificar.php
 [Verificaciones]
 VERIFICACIONES_F=/home/usuario/ruta_img/verificando
 
+[VOTACION]
+ID_PRIMARIAS=1
+V_TAMANO=24
+V_GRUPOS=4
+V_SEPARADOR=-
+T_TAMANO=6
+T_GRUPOS=6
+T_SEPARADOR=-
+
 [Otros]
 DEBUG=NO
 VOTACION=1

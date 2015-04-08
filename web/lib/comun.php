@@ -140,3 +140,33 @@ function guardarImagenSubida($nombre,$nombreFichero) {
 	
 	return "Error desconocido al subir la imágen";
 }
+
+
+
+function enviarMail($email, $titulo, $mensaje) {
+
+	// Para enviar un correo HTML, debe establecerse la cabecera Content-type
+	$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
+	$cabeceras .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+
+	// Cabeceras adicionales
+	//$cabeceras .= 'To: Mary <mary@example.com>, Kelly <kelly@example.com>' . "\r\n";
+	$cabeceras .= 'From: No-reply Ganar Alcorcón <no-reply@ganaralcorcon.com>' . "\r\n";
+
+	// Enviarlo
+	mail($email, $titulo, $mensaje, $cabeceras);
+	
+	//TODO: ELIMINAR
+	error_log($mensaje);
+}
+
+
+function enviarSMS($telefono, $mensaje) {
+	//TODO
+	
+
+	//TODO: ELIMINAR
+	error_log($mensaje);
+	
+	return true;
+}
