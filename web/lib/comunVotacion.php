@@ -101,6 +101,115 @@ function votaEnMesa($nombre, $apellido1, $apellido2 ,$nif, $fchaNac, $mesa) {
 	return array("puedeVotar" => $puedeVotar, "mensajeError" => $mensajeError);
 }
 
+
+function borrarCensoError($nombre, $apellido1, $apellido2 ,$nif, $fchaNac, $mesa) {
+	$consulta = sprintf ("DELETE FROM " . $TABLE_PREFIX . "CENSO WHERE NOMBRE=%s AND APELLIDO1=%s AND FECHA_NACIMIENTO=%s AND ID_VOTACION=%d AND ID_MESA=%d AND HA_VOTADO IS NOT NULL",
+			prepararCampo($nombre),
+			prepararCampo($apellido1),
+			prepararCampo($fchaNac),
+			$CONFIG["VOTACION"],
+			$mesa
+	);
+	
+	if (isset($apellido2) && trim($apellido2) != "") {
+		$consulta= $consulta . " AND APELLIDO2=" . prepararCampo($apellido2);
+	}
+	if (isset($nif) && trim($nif) != "") {
+		$consulta= $consulta . " AND NIF=" . prepararCampo($nif);
+	}
+		
+	$resultado = $enlace->query($consulta);
+	if (!$resultado) {
+		trazar ("Error grave al borrar un votante del censo por error: " . $consulta . "). Devolvió " . $enlace->error);
+	}
+}
+
+function votaEnWeb($simpatizante, $cabezaLista, $listaGeneral) {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	global $DEBUG;
+	
+	$votoCorrecto= false;
+	$mensajeError= "";
+	
+	//Comprobar la entrada
+	$entradaCorrecta=true;
+	$candidatos= listaCandidatos();
+	
+	if (!isset($candidatos[$cabezaLista])) {
+		$entradaCorrecta=false;
+		$mensajeError= "Error en el cabeza de lista";
+		if ($DEBUG) {
+			$mensajeError= $mensajeError . ": " . $cabezaLista;
+		}
+		trazar("Error con el valor del cabeza de lista: " . $cabezaLista);
+	}
+	
+	foreach ($listaGeneral as $cand) {
+		if (!isset($candidatos[$cand])) {
+			$entradaCorrecta=false;
+			$mensajeError= "Error en un elemento de la lista general";
+			if ($DEBUG) {
+				$mensajeError= $mensajeError . ": " . $cand;
+			}
+			trazar("Error en un elemento de la lista general: " . $cand);
+		}
+	}
+	
+	if ($entradaCorrecta) {
+		$resultado= votaEnMesa($simpatizante["NOMBRE"], $simpatizante["APELLIDO1"], $simpatizante["APELLIDO2"] ,$simpatizante["NIF"], leerFechaBD($simpatizante["FECHA_NACIMIENTO"]), $CONFIG["ID_MESA_WEB"]);
+		
+		if ($resultado["puedeVotar"]) {
+			$resultado= insertarVotoWeb($simpatizante["ID"], $cabezaLista, $listaGeneral);
+			if ($resultado["correcto"]) {
+				$votoCorrecto= true;
+			} else {
+				$mensajeError= $resultado["mensajeError"];
+				borrarCensoError($simpatizante["NOMBRE"], $simpatizante["APELLIDO1"], $simpatizante["APELLIDO2"] ,$simpatizante["NIF"], leerFechaBD($simpatizante["FECHA_NACIMIENTO"]), $CONFIG["ID_MESA_WEB"]);
+			}
+		} else {
+			$mensajeError= "Error en el censo de votantes: " . $resultado["mensajeError"];
+		}
+	}
+
+	return array("votoCorrecto" => $votoCorrecto, "mensajeError" => $mensajeError);
+}
+
+
+function insertarVotoWeb($idSimpatizante, $cabezaLista, $listaGeneral) {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	global $DEBUG;
+	
+	$correcto= false;
+	$mensajeError= "";
+	
+	$general=join(";",$listaGeneral);
+	
+	conectarBD();
+	
+	$consulta = sprintf ("INSERT INTO " . $TABLE_PREFIX . "VOTOS (ID_SIMPATIZANTE, CABEZA_LISTA, RESTO_LISTA) VALUES(%d,%s,%s);",
+			$idSimpatizante,
+			prepararCampo($cabezaLista),
+			prepararcampo($general)
+	);
+	
+	$resultado = $enlace->query($consulta);
+	if ($resultado) {
+		$correcto= true;
+	} else {
+		$mensajeError= "Ocurrió un error al insertar el voto";
+		if ($DEBUG) {
+			$mensajeError= $mensajeError . " " . $consulta . ". Devolvió " . $enlace->error;
+		}
+		trazar ("Error al insertar el voto " . $consulta . ". Devolvió " . $enlace->error);
+	}
+	
+	return array("correcto" => $correcto, "mensajeError" => $mensajeError);
+}
+
 function recuperaVotacion($idVotacion) {
 	global $CONFIG;
 	global $enlace;
@@ -295,4 +404,26 @@ function generarVerificacionSMSVotar ($idSimpatizante, $telefono) {
 }
 
 
-
+function listaCandidatos() {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	
+	conectarBD();
+	
+	$consulta ="SELECT * FROM " . $TABLE_PREFIX . "CANDIDATOS";
+		
+	// Ejecutar la consulta
+	$resultado = $enlace->query($consulta);
+	
+	if ($resultado) {
+		$candidatos= array();
+		while ($candidato= $resultado->fetch_assoc()) {
+			$candidatos[$candidato["ID"]]= $candidato;
+		}
+		shuffle_assoc($candidatos);
+		return $candidatos;
+	}
+	
+	return false;
+}

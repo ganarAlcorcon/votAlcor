@@ -37,6 +37,7 @@ if (!(include_once dirname(__FILE__).'/../lib/comunCenso.php')) {
 				$resultado= codigoEmail($_POST["email"]);
 				
 				if ($resultado["puedeVotar"]) {
+					$_SESSION["email_v"]= true;
 			
 			
 		/*if ($_POST["VOTACION"]) {

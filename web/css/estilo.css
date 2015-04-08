@@ -110,3 +110,50 @@ form.vertical label, form.vertical label + input  {
 	display: table-cell;
 	margin: 5px 20px;
 }
+
+.candidatos {
+	margin-top: 40px;
+	border-bottom: black solid 2px;
+	padding-bottom: 40px;
+}
+
+.candidatos:last-of-type {
+	margin-top: 40px;
+	border-bottom: none;
+	margin-bottom: 90px;
+	padding-bottom: 0;
+}
+
+.candidatos .cabecera_nombre {
+	background-color: #F4EFEA;
+	padding: 10px 40px;
+}
+
+.candidatos .cabecera_nombre img {
+	padding: 6px;
+	border: 3px solid #C9302C;
+	background-color: #F9EDED;
+}
+
+.candidatos .cabecera_nombre .nombre {
+	font-size: 2em;
+}
+
+.candidatos .biografia {
+	border: #3E8F3E solid 2px;
+	border-radius: 15px 30px;
+	padding: 10px 40px;
+	background-color: #EEF7EE;
+}
+
+.candidatos .motivaciones {
+	border: purple solid 2px;
+	border-radius: 15px 30px;
+	padding: 10px 40px;
+	background-color: #F4EAF4;
+}
+
+h3.importante{
+	background-color: #EEE;
+	padding: 20px 60px;
+}

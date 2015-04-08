@@ -39,10 +39,11 @@ if (!(include_once dirname(__FILE__).'/../lib/comunVotacion.php')) {
 		<div id="divOk" class="alert alert-success"></div>
 		<form action="votoEmail.php" accept-charset="utf-8" method="post" enctype="multipart/form-data" role="form" class="form-horizontal" >
 			<h2>Importante para la votación</h2>
-			<p>Antes de iniciar la votación asegúrese de tener acceso al correo electrónico con el que se registró (mejor si lo tiene abierto en otra ventana/pestaña) y que tiene cerca y encendido el teléfono móvil con el que se registró.</p>
-			<p>Durante el proceso de votación se le enviarán distintos códigos, tanto al correo electrónico como por SMS, que deberá introducir para continuar con la votación. Si permanece demasiado tiempo sin hacer nada la sesión podría caducar y tendría que empezar otra vez.<br/>
+			<p>Antes de iniciar la votación <b>asegúrese de tener acceso al correo electrónico</b> con el que se registró (mejor si lo tiene abierto en otra ventana/pestaña) <b>y que tiene cerca y encendido el teléfono móvil</b> con el que se registró.</p>
+			<p>Durante el proceso de votación <b>se le enviarán distintos códigos, tanto al correo electrónico como por SMS</b>, que deberá introducir para continuar con la votación. Si permanece demasiado tiempo sin hacer nada la sesión podría caducar y tendría que empezar otra vez.<br/>
 			Es posible que se produzca un retraso de hasta 1 minuto o más desde que se envía el código hasta que se recibe (aunque normalmente será casi inmediato), por favor, tenga paciencia. Cuando reciba el código, introdúzcalo para continuar.
 			</p>
+			<p><b>No recargue la página ni navegue hacia atrás</b> porque provocará un fallo en la validación y tendrá que volver a empezar</p>
 			<p>Su inscripción en el censo debe haber pasado el proceso de validación para poder votar. Errores en los datos o documentos enviados provocarán que su inscripción sea invalidada y no pueda votar</p>
 			<p>Si tiene problemas para realizar la votación, acuda a la mesa física que esta abierta de forma permanente en el Ateneo Popular de Alcorcón</p>
 			

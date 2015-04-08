@@ -337,3 +337,16 @@ function check_nif_cif_nie($cif) {
 	return 0;
 }
 
+function shuffle_assoc(&$array) {
+	$keys = array_keys($array);
+
+	shuffle($keys);
+
+	foreach($keys as $key) {
+		$new[$key] = $array[$key];
+	}
+
+	$array = $new;
+
+	return true;
+}
