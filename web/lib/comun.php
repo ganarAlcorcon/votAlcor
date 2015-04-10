@@ -210,8 +210,6 @@ function enviarSMS($telefono, $mensaje) {
 			$result= true;
 		}
 		
-		var_dump(strpos($contenido, "Invalid password"));
-		
 		if (isset ($contenido) && strpos($contenido, $CONFIG["SMS_CONTENIDO_VALIDO"]) !== FALSE) {
 			$result= true;
 		}
@@ -225,7 +223,7 @@ function enviarSMS($telefono, $mensaje) {
 	
 
 	//TODO: ELIMINAR
-	error_log($mensaje);
+	//error_log($mensaje);
 	
 	return $result;
 }

@@ -298,10 +298,15 @@ function generarVerificacionMailVotar ($idSimpatizante, $email) {
 	global $CONFIG;
 	global $enlace;
 	global $TABLE_PREFIX;
+	global $DEBUG;
 
 	conectarBD();
 
 	$clave= textoAleatorio($CONFIG["V_TAMANO"],$CONFIG["V_GRUPOS"],$CONFIG["V_SEPARADOR"]);
+	
+	if ($DEBUG) {
+		echo "clave email: ". $clave;
+	}
 
 	//TODO: Comprobar que no existe la clave
 
@@ -382,10 +387,15 @@ function generarVerificacionSMSVotar ($idSimpatizante, $telefono) {
 	global $CONFIG;
 	global $enlace;
 	global $TABLE_PREFIX;
+	global $DEBUG;
 
 	conectarBD();
 
 	$clave= textoAleatorio($CONFIG["T_TAMANO"],$CONFIG["T_GRUPOS"],$CONFIG["T_SEPARADOR"]);
+
+	if ($DEBUG) {
+		echo "clave SMS: ". $clave;
+	}
 
 	//TODO: Comprobar que no existe la clave
 
