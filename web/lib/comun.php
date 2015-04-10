@@ -162,11 +162,70 @@ function enviarMail($email, $titulo, $mensaje) {
 
 
 function enviarSMS($telefono, $mensaje) {
+	global $DEBUG;
+	global $CONFIG;
+
 	//TODO
+	$urls=explode("|",$CONFIG["URLS_SMS"]);
+	$intentos= intval($CONFIG["INTENTOS_SMS"]);
+	
+	$result= false;
+	$i=0;
+	while (!$result && $i < $intentos && count($urls) >= $i) {
+		$url=$urls[$i];
+		
+		//Metemos los datos
+		$url= str_replace(array("%telefono%","%texto%"), array(urlencode($telefono), urlencode($mensaje)),$url);
+		
+
+		if ($DEBUG) {
+			echo "SMS: envío " . $i . ": " . $url;
+		}
+		
+		/*$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HEADER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+		$result = curl_exec($ch);
+		curl_close($ch);*/
+		
+		
+		$opts = array('http' =>
+				array(
+						'timeout'  => 2,
+						'ignore_errors' => true
+				)
+		);
+		
+		$context = stream_context_create($opts);
+		
+		$contenido= file_get_contents($url, false, $context);
+		
+		if ($DEBUG) {
+			var_dump($http_response_header);
+			echo "'".trim($contenido)."'";
+		}
+		
+		if (isset($http_response_header) && strpos($http_response_header[0], $CONFIG["SMS_CODIGO_VALIDO"]) !== FALSE) {
+			$result= true;
+		}
+		
+		var_dump(strpos($contenido, "Invalid password"));
+		
+		if (isset ($contenido) && strpos($contenido, $CONFIG["SMS_CONTENIDO_VALIDO"]) !== FALSE) {
+			$result= true;
+		}
+
+		if ($DEBUG) {
+			echo "SMS: Resultado " . $i . ": " . ($result?"V":"X");
+		}
+		
+		$i++;
+	}
 	
 
 	//TODO: ELIMINAR
 	error_log($mensaje);
 	
-	return true;
+	return $result;
 }

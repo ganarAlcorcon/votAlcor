@@ -28,9 +28,9 @@ if (!(include_once dirname(__FILE__).'/../lib/comunVotacion.php')) {
 	</head>
 	<body class="container" onload="inicio()">
 		<?php 
-		if (!isset($_SESSION["VOTACION"]) || !$_SESSION["VOTACION"]) {
+		//if (!isset($_SESSION["VOTACION"]) || !$_SESSION["VOTACION"]) {
 			$_SESSION["VOTACION"]=recuperaVotacion($CONFIG["ID_PRIMARIAS"]);
-		}
+		//}
 		
 		if ($_SESSION["VOTACION"]) {
 			if (comprobarFechasVotacion($_SESSION["VOTACION"])) {
