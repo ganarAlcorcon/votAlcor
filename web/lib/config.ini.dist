@@ -38,6 +38,7 @@ RUTA_IMG_CANDIDATOS=/ruta/web/img_candidatos
 DESCRIPCION=S
 MAX_VOTOS_GENERAL=13
 ID_MESA_WEB=5
+VOTO_CON_NOMBRE=N
 
 [SMS]
 URLS_SMS="http://ganarsms1.ddns.net:9090/sendsms?phone=%telefono%&text=%texto%&password=ganas|http://ganarsms2.ddns.net:9090/sendsms?phone=%telefono%&text=%texto%&password=ganas"

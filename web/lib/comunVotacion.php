@@ -102,6 +102,58 @@ function votaEnMesa($nombre, $apellido1, $apellido2 ,$nif, $fchaNac, $mesa) {
 }
 
 
+function votaEnMesaNif($nif, $mesa) {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	global $DEBUG;
+
+	conectarBD();
+	
+	$fchaNac= formatearFechaBD($fchaNac);
+	$consulta = sprintf ("SELECT C.*, M.NOMBRE AS NOMBRE_MESA FROM " . $TABLE_PREFIX . "CENSO C LEFT OUTER JOIN " . $TABLE_PREFIX . "MESAS M ON M.ID = C.ID_MESA WHERE upper(C.NIF)=%s AND C.HA_VOTADO IS NOT NULL",
+			prepararCampo($nif)
+	);
+	
+	$puedeVotar= false;
+	$mensajeError= "";
+	
+	$resultado = $enlace->query($consulta);
+	if ($resultado) {
+		if ($yaVoto= $resultado->fetch_assoc()) {
+			$mensajeError= $yaVoto["NIF"] . " ya votó en la mesa " . $yaVoto["NOMBRE_MESA"] . " a las " . formatearTiempoFecha(leerFechaTiempoBD($yaVoto["HA_VOTADO"]));
+		} else {
+			
+			$insert = "INSERT INTO " . $TABLE_PREFIX . "CENSO(NIF,ID_VOTACION,ID_MESA,HA_VOTADO";
+					
+			$values = sprintf (") VALUES (%s,%d,%d,NOW()",
+					prepararCampo($nif),
+					$CONFIG["VOTACION"],
+					$mesa
+			);
+
+			$resultado = $enlace->query($insert . $values . ")");
+			if ($resultado) {
+				$puedeVotar= true;
+			} else {
+				$mensajeError= "Ocurrió un error al inscribir en el censo";
+				if ($DEBUG) {
+					$mensajeError= $mensajeError . " " . $insert . $values . "). Devolvió " . $enlace->error;
+				}
+				trazar ("Error al inscribir en el censo " . $insert . $values . "). Devolvió " . $enlace->error);
+			}
+		}
+	} else {
+		$mensajeError= "Ocurrió un error al buscar en el censo";
+		if ($DEBUG) {
+			$mensajeError= $mensajeError . " " . $consulta . ". Devolvió " . $enlace->error;
+		}
+		trazar ("Error al consultar el censo " . $consulta . ". Devolvió " . $enlace->error);
+	}
+	return array("puedeVotar" => $puedeVotar, "mensajeError" => $mensajeError);
+}
+
+
 function borrarCensoError($nombre, $apellido1, $apellido2 ,$nif, $fchaNac, $mesa) {
 	global $CONFIG;
 	global $enlace;

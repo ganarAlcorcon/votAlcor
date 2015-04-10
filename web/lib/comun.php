@@ -206,11 +206,11 @@ function enviarSMS($telefono, $mensaje) {
 			echo "'".trim($contenido)."'";
 		}
 		
-		if (isset($http_response_header) && strpos($http_response_header[0], $CONFIG["SMS_CODIGO_VALIDO"]) !== FALSE) {
+		if (isset($http_response_header) && isset($CONFIG["SMS_CODIGO_VALIDO"]) &&  strpos($http_response_header[0], $CONFIG["SMS_CODIGO_VALIDO"]) !== FALSE) {
 			$result= true;
 		}
 		
-		if (isset ($contenido) && strpos($contenido, $CONFIG["SMS_CONTENIDO_VALIDO"]) !== FALSE) {
+		if (isset ($contenido) && isset($CONFIG["SMS_CONTENIDO_VALIDO"]) && strpos($contenido, $CONFIG["SMS_CONTENIDO_VALIDO"]) !== FALSE) {
 			$result= true;
 		}
 

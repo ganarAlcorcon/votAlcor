@@ -53,18 +53,29 @@ if (!autenticado()) {?>
 		<script type="text/javascript">
 		<?php 
 		if (isset($_POST["comprobar"])) {
-			// Leemos la fecha en el formato que se indica
-			$fchaNac= leerFecha($_POST["fechaNacimiento"]);
-			
-			// Algunos navegadores envían la fecha con otro formato (al ser el input de tipo date)
-			if (!$fchaNac) {
-				$fchaNac= leerFechaBD($_POST["fechaNacimiento"]);
-			}
+
+			if ($CONFIG["VOTO_CON_NOMBRE"]=='S') {
+				// Leemos la fecha en el formato que se indica
+				$fchaNac= leerFecha($_POST["fechaNacimiento"]);
 				
-			if (!$fchaNac) {
-				echo "mensajeError= \"Fecha " . $_POST["fechaNacimiento"] . " incorrecta. El formato es dd/mm/aaaa\";";
+				// Algunos navegadores envían la fecha con otro formato (al ser el input de tipo date)
+				if (!$fchaNac) {
+					$fchaNac= leerFechaBD($_POST["fechaNacimiento"]);
+				}
+					
+				if (!$fchaNac) {
+					echo "mensajeError= \"Fecha " . $_POST["fechaNacimiento"] . " incorrecta. El formato es dd/mm/aaaa\";";
+				} else {
+					$resultado= votaEnMesa($_POST["nombre"],$_POST["apellido1"],$_POST["apellido2"],$_POST["nif"], $fchaNac,$_SESSION["mesa"]["ID"]);
+	
+					if ($resultado["puedeVotar"]) {
+						echo "mensajeOk= \"Se ha registrado el voto de ". $_POST["nombre"] . "\"";
+					} else {
+						echo "mensajeError= \"" . $resultado["mensajeError"] . "\";";
+					}
+				}
 			} else {
-				$resultado= votaEnMesa($_POST["nombre"],$_POST["apellido1"],$_POST["apellido2"],$_POST["nif"], $fchaNac,$_SESSION["mesa"]["ID"]);
+				$resultado= votaEnMesaNif($_POST["nif"],$_SESSION["mesa"]["ID"]);
 
 				if ($resultado["puedeVotar"]) {
 					echo "mensajeOk= \"Se ha registrado el voto de ". $_POST["nombre"] . "\"";
@@ -83,6 +94,7 @@ if (!autenticado()) {?>
 		<form class="form-horizontal" action="" method="post">
 			<div class="container-fluid">
 				<div class="row" id="datos">
+				<?php if ($CONFIG["VOTO_CON_NOMBRE"]=='S') {?>
 					<div class="form-group">
 						<label for="nombre" class="col-sm-2 control-label">Nombre (*)</label>
 						<div class="col-sm-8 col-md-6 col-lg-5">
@@ -101,18 +113,22 @@ if (!autenticado()) {?>
 							<input type="text" name="apellido2" class="form-control" id="apellido2" placeholder="Segundo apellido si tiene">
 						</div>
 					</div>
+				<?php }?>
 					<div class="form-group">
 						<label for="nif" class="col-sm-2 control-label">NIF</label>
 						<div class="col-sm-4 col-md-3 col-lg-2">
-							<input type="text" name="nif" class="form-control" id="nif" placeholder="NIF o NIE si tiene">
+							<input type="text" name="nif" class="form-control" id="nif" placeholder="NIF, NIE u otro código válido" required="required">
 						</div>
 					</div>
+				
+				<?php if ($CONFIG["VOTO_CON_NOMBRE"]=='S') {?>
 					<div class="form-group">
 						<label for="fechaNacimiento" class="col-sm-2 control-label">Fecha de nacimiento (*)</label>
 						<div class="col-sm-4 col-md-3 col-lg-2">
 							<input type="text" name="fechaNacimiento" class="form-control" id="fechaNacimiento" placeholder="Fecha de nacimiento" required="required">
 						</div>
 					</div>
+				<?php }?>
 				</div>
 			
 				<div class="row" id="accion">
