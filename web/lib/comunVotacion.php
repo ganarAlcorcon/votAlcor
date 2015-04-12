@@ -195,14 +195,14 @@ function votaEnWeb($simpatizante, $cabezaLista, $listaGeneral) {
 	$entradaCorrecta=true;
 	$candidatos= listaCandidatos();
 	
-	if (!isset($candidatos[$cabezaLista])) {
+	/*if (!isset($candidatos[$cabezaLista])) {
 		$entradaCorrecta=false;
 		$mensajeError= "Error en el cabeza de lista";
 		if ($DEBUG) {
 			$mensajeError= $mensajeError . ": " . $cabezaLista;
 		}
 		trazar("Error con el valor del cabeza de lista: " . $cabezaLista);
-	}
+	}*/
 	
 	foreach ($listaGeneral as $cand) {
 		if (!isset($candidatos[$cand])) {
@@ -495,3 +495,69 @@ function listaCandidatos() {
 	
 	return false;
 }
+
+function recuperaResultados() {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	
+	conectarBD();
+	
+	$candidatos= listaCandidatos();
+	
+	$consulta ="SELECT * FROM " . $TABLE_PREFIX . "VOTOS";
+	
+	// Ejecutar la consulta
+	$resultado = $enlace->query($consulta);
+	
+	if ($resultado) {
+		$listaGeneral= array();
+		$cabezaLista= array();
+		while ($voto= $resultado->fetch_assoc()) {
+			$votoCL=$voto["CABEZA_LISTA"];
+			
+			//Contamos cabeza de lista
+			if (isset($votoCL) && trim($votoCL) != "") {
+				if (isset($cabezaLista[$votoCL])){
+					$cabezaLista[$votoCL]["VOTOS"]= $cabezaLista[$votoCL]["VOTOS"]+1;
+				} else {
+					$nuevo= array();
+					$nuevo["VOTOS"]= 1;
+					$nuevo["NOMBRE"]=$candidatos[$votoCL]["NOMBRE_COMPLETO"];
+					$cabezaLista[$votoCL]=$nuevo;
+				}
+			}
+
+			$votosLG=explode(";",$voto["RESTO_LISTA"]);
+			foreach($votosLG as $candidato) {
+				if (isset($listaGeneral[$candidato])){
+					$listaGeneral[$candidato]["VOTOS"]= $listaGeneral[$candidato]["VOTOS"]+1;
+				} else {
+					$nuevo= array();
+					$nuevo["VOTOS"]= 1;
+					$nuevo["NOMBRE"]=$candidatos[$candidato]["NOMBRE_COMPLETO"];
+					$listaGeneral[$candidato]=$nuevo;
+				}
+			}
+		}
+		
+		usort($cabezaLista,"comparaCandidatos");
+		usort($listaGeneral,"comparaCandidatos");
+		
+		return array(
+				"CABEZA_LISTA" => $cabezaLista,
+				"LISTA_GENERAL" => $listaGeneral
+		);
+	}
+	
+	return false;
+}
+
+function comparaCandidatos($a, $b)
+{
+	if ($a["VOTOS"] == $b["VOTOS"]) {
+		return 0;
+	}
+	return ($a["VOTOS"] < $b["VOTOS"]) ? 1 : -1;
+}
+
