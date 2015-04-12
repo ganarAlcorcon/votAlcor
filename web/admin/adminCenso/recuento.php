@@ -33,10 +33,12 @@ if (!autenticado()) {?>
 	<table class="tabla_votacion">
 		<thead>
 			<tr>
-				Nombre
-			</tr>
-			<tr>
-				Votos
+				<td>
+					Nombre
+				</td>
+				<td>
+					Votos
+				</td>
 			</tr>
 		</thead>
 		<tbody>

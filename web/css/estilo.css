@@ -158,9 +158,13 @@ h3.importante{
 	padding: 20px 60px;
 }
 
+table.tabla_votacion td {
+	padding: 2px 6px;
+}
 table.tabla_votacion thead tr {
 	background-color: #1E6334;
 	color: #FFF;
+	text-align: center;
 }
 
 table.tabla_votacion tbody tr:nth-child(even) {
