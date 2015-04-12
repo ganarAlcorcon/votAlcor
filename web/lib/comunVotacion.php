@@ -561,3 +561,49 @@ function comparaCandidatos($a, $b)
 	return ($a["VOTOS"] < $b["VOTOS"]) ? 1 : -1;
 }
 
+function validaDocumentosCenso() {
+	global $CONFIG;
+	global $enlace;
+	global $TABLE_PREFIX;
+	
+	conectarBD();
+	
+	$mesas= recuperaMesas();
+	
+	$consulta ="SELECT * FROM " . $TABLE_PREFIX . "CENSO";
+	$nif= NULL;
+	$mesa= NULL;
+	$hora= NULL;
+	
+	// Ejecutar la consulta
+	$resultado = $enlace->query($consulta);
+	
+	if ($resultado) {
+		$documentosErroneos= array();
+		while ($documento= $resultado->fetch_assoc()) {
+			$nif= $documento["NIF"];
+			$mesa= $documento["ID_MESA"];
+			$hora= $documento["HA_VOTADO"];
+			
+			$validaNif= "";
+			if (isset($nif)) {
+				$validaNif= check_nif_cif_nie($nif);
+			}
+			
+			if ($validaNif != 1 && $validaNif != 3) {
+				$nuevoErroneo= array();
+
+				$nuevoErroneo["DOCUMENTO"]= $nif;
+				$nuevoErroneo["TIPO_ERROR"]= textoValidaNif($validaNif);
+				$nuevoErroneo["MESA"]= $mesas[$mesa]["NOMBRE"];
+				$nuevoErroneo["HORA"]= formatearTiempoFecha(leerFechaTiempoBD($hora));
+				
+				$documentosErroneos[]= $nuevoErroneo;
+			}
+		}
+	}
+	
+	return array (
+			"ERRONEOS" => $documentosErroneos
+	);
+}

@@ -350,3 +350,27 @@ function shuffle_assoc(&$array) {
 
 	return true;
 }
+
+/**
+1 = NIF ok, 2 = CIF ok, 3 = NIE ok, -1 = NIF bad, -2 = CIF bad, -3 = NIE bad, 0 = ??? bad
+*/
+function textoValidaNif($validaNif) {
+	switch ($validaNif) {
+		case 1: return "DNI OK";
+			break;
+		case 2: return "CIF OK";
+			break;
+		case 3: return "NIE OK";
+			break;
+		case -1: return "DNI erróneo";
+			break;
+		case -2: return "CIF erróneo";
+			break;
+		case -3: return "NIE erróneo";
+			break;
+		case 0: return "Error de validación no especificado";
+			break;
+		default: return "Error de validación desconocido";
+			break;
+	}
+} 

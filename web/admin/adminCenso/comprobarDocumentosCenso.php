@@ -27,62 +27,45 @@ if (!autenticado()) {?>
 <?php 
 } else {
 ?>
-	<h1>Recuento de la votación</h1>
+	<h1>Verificación de los documentos del censo</h1>
 	
-	<h2>Cabeza de lista</h2>
+	<h2>Documentos no válidos</h2>
 	<table class="tabla_votacion">
-		<thead>
-			<tr>
-				Nombre
-			</tr>
-			<tr>
-				Votos
-			</tr>
-		</thead>
-		<tbody>
-	<?php 
-	$resultados=recuperaResultados();
-	
-	
-	foreach ($resultados["CABEZA_LISTA"] as $resultado) {
-	?>
+		<thead style="background-color: #AAA">
 			<tr>
 				<td>
-					<?php echo $resultado["NOMBRE"];?>
+					Documento
 				</td>
 				<td>
-					<?php echo $resultado["VOTOS"];?>
-				</td>
-			</tr>
-	<?php 
-	}
-	?>
-		</tbody>
-	</table>
-	
-	<h2>Lista general</h2>
-	<table class="tabla_votacion">
-		<thead>
-			<tr>
-				<td>
-					Nombre
+					Tipo error
 				</td>
 				<td>
-					Votos
+					Mesa
+				</td>
+				<td>
+					Hora
 				</td>
 			</tr>
 		</thead>
 		<tbody>
 	<?php 
+	$resultados=validaDocumentosCenso();
 	
-	foreach ($resultados["LISTA_GENERAL"] as $resultado) {
+	
+	foreach ($resultados["ERRONEOS"] as $resultado) {
 	?>
 			<tr>
 				<td>
-					<?php echo $resultado["NOMBRE"];?>
+					<?php echo $resultado["DOCUMENTO"];?>
 				</td>
 				<td>
-					<?php echo $resultado["VOTOS"];?>
+					<?php echo $resultado["TIPO_ERROR"];?>
+				</td>
+				<td>
+					<?php echo $resultado["MESA"];?>
+				</td>
+				<td>
+					<?php echo $resultado["HORA"];?>
 				</td>
 			</tr>
 	<?php 

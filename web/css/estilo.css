@@ -157,3 +157,16 @@ h3.importante{
 	background-color: #EEE;
 	padding: 20px 60px;
 }
+
+table.tabla_votacion thead tr {
+	background-color: #1E6334;
+	color: #FFF;
+}
+
+table.tabla_votacion tbody tr:nth-child(even) {
+	background-color: #FC8C93;
+}
+
+table.tabla_votacion tbody tr:nth-child(odd) {
+	background-color: #FC8CF6;
+}

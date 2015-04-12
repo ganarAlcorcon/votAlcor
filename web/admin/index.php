@@ -47,6 +47,7 @@ if (isset($_POST["email"])){
 			</form>
 		
 			<h2>Aplicación de gestión</h2>
+			<a href="adminCenso/">Administración del censo</a><br />
 			<a href="adminCenso/comprobarCensoMesa.php">Votación en mesa</a><br />
 		<?php }?>
 	</body>
