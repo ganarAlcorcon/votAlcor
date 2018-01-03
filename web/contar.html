@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html >
+<head>
+
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dijit/themes/claro/claro.css">
+	
+	<script src='http://code.jquery.com/jquery-1.11.2.min.js'></script>
+	<script>
+	jQuery(document).ready(function () {
+		jQuery("[for^=integerspinner]").attr("onclick","sumar(jQuery(this).attr('for'))");
+		jQuery("[for^=integerspinner]").css("background-color","#BBB");
+		jQuery("[for^=integerspinner]").css("font-size","1.5em");
+	});
+
+	function sumar(id) {
+		actual=jQuery("#" + id).val();
+		jQuery("#" + id).val(parseInt(actual)+1);
+	}
+	</script>
+	<script>
+	dojoConfig = {async: true, parseOnLoad: true};
+	</script>
+	<script src='https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js'></script>
+	<script>
+require(["dojo/parser", "dijit/form/NumberSpinner"]);
+	</script>
+</head>
+<body class="claro">
+
+<table>
+<tr>
+<td colspan="4">Cabeza de Lista</td>
+</tr>
+<tr>
+<td><label for="integerspinner2">Héctor Orejudo de Pablo</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner2"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner4">Inmaculada Torres Cachinero</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner4"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner3">José María Valentín Azabal</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner3"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner1">Jesús Santos Gimeno</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner1"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+</tr>
+</table>
+</br>
+<table>
+<tr>
+<td colspan="4">Resto de la lista</td>
+</tr>
+<tr>
+<td><label for="integerspinner5">Alberto García López</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner5"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner9">Alberto López Ortega</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner9"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner23">Alejandro Argüeso Sancerni</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner23"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner25">Alejandro Ladera Chamorro</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner25"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+</tr>
+<tr>
+<td><label for="integerspinner18">Alicia Gonzalez Brotón</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner18"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner24">Ana Canal Gutierrez</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner24"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner19">Ana Carrillo Blanco</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner19"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner26">Arantza Rodrigo</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner26"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+</tr>
+<tr>
+<td><label for="integerspinner20">Beatriz Franganillo Lera</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner20"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner6">Beatriz Iglesias Rodríguez</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner6"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner16">Enrique Ferres Benedito</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner16"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner10">Ernesto José Sales Girona</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner10"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+</tr>
+<tr>
+<td><label for="integerspinner28">Héctor Orejudo de Pablo</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner28"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner30">Inmaculada Torres Cachinero</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner30"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner22">Jose Luis Mateos Murillo</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner22"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner29">José María Valentín Azabal</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner29"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+</tr>
+<tr>
+<td><label for="integerspinner27">Jesús Santos Gimeno</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner27"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner11">Lazaro Sola Macía</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner11"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner12">Luís Ruz Amorín</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner12"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner13">Miguel Ramón Gil Agüero</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner13"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<tr>
+</tr>
+</tr>
+<tr>
+<td><label for="integerspinner21">Pablo Lopez Jimenez</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner21"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner15">Raquel Rodríguez Tercero</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner15"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner7">Raúl Salazar Ledesma</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner7"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner14">Rosana Zarapuz Puertas</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner14"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+</tr>
+<tr>
+<td><label for="integerspinner17">Rubén Benayas Ocaña</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner17"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+<td><label for="integerspinner8">Sam Robson</label></td>
+<td>
+ <input data-dojo-type="dijit/form/NumberSpinner"    id="integerspinner8"    value="0"    data-dojo-props="smallDelta:1, constraints:{min:0,max:5000,places:0}"  style="width:100px"  name="someNumber"/>
+</td>
+</tr>
+</table>
+  
+</body>
+</html>
